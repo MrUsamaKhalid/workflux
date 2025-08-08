@@ -36,25 +36,25 @@ export default function AdminPage() {
 
   return (
     <AppShell requireAdmin>
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Admin Panel</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">Admin Panel</h1>
       {loading ? (
-        <p>Loading…</p>
+        <p className="text-purple-200">Loading…</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-300">
+          <table className="min-w-full divide-y divide-white/20">
             <thead>
-              <tr>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">User ID</th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Email</th>
-                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Created</th>
+              <tr className="bg-white/10">
+                <th className="px-4 py-2 text-left text-sm font-semibold text-white">User ID</th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-white">Email</th>
+                <th className="px-4 py-2 text-left text-sm font-semibold text-white">Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-white/10">
               {users.map((u) => (
-                <tr key={u.id} className="bg-white/40 backdrop-blur">
-                  <td className="px-4 py-2 text-sm text-gray-800">{u.id}</td>
-                  <td className="px-4 py-2 text-sm text-gray-800">{u.email}</td>
-                  <td className="px-4 py-2 text-sm text-gray-800">{u.created_at}</td>
+                <tr key={u.id} className="bg-white/10 backdrop-blur">
+                  <td className="px-4 py-2 text-sm text-purple-200">{u.id}</td>
+                  <td className="px-4 py-2 text-sm text-purple-200">{u.email}</td>
+                  <td className="px-4 py-2 text-sm text-purple-200">{u.created_at}</td>
                 </tr>
               ))}
             </tbody>

@@ -77,9 +77,9 @@ export default function AppShell({ children, requireAdmin = false }: AppShellPro
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <nav className="w-64 bg-white/40 backdrop-blur border-r border-white/20 p-4 flex flex-col gap-2">
+      <nav className="w-64 bg-white/10 backdrop-blur border-r border-white/20 p-4 flex flex-col gap-2">
         <div className="mb-8">
-          <Link href="/dashboard" className="text-2xl font-bold text-gray-900">
+          <Link href="/dashboard" className="text-2xl font-bold text-white">
             Workflux
           </Link>
         </div>
@@ -89,8 +89,8 @@ export default function AppShell({ children, requireAdmin = false }: AppShellPro
             href={item.href}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
               pathname === item.href
-                ? 'bg-indigo-600 text-white'
-                : 'text-gray-800 hover:bg-indigo-100 hover:text-gray-900'
+                ? 'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white'
+                : 'text-purple-200 hover:bg-white/10 hover:text-white'
             }`}
           >
             <span className="text-lg">{item.icon}</span>
@@ -103,13 +103,13 @@ export default function AppShell({ children, requireAdmin = false }: AppShellPro
             await supabase.auth.signOut();
             router.push('/signin');
           }}
-          className="mt-auto px-4 py-3 rounded-lg text-sm font-medium text-rose-600 hover:bg-rose-100 transition-colors"
+          className="mt-auto px-4 py-3 rounded-lg text-sm font-medium text-rose-400 hover:bg-rose-500/20 transition-colors"
         >
           Sign out
         </button>
       </nav>
       {/* Main content */}
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 p-8 overflow-y-auto text-white">
         {children}
       </main>
     </div>

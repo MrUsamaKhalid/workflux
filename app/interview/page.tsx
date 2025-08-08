@@ -59,13 +59,13 @@ export default function InterviewBuddy() {
 
   return (
     <AppShell>
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Interview Buddy</h1>
-      <div className="flex flex-col max-w-3xl w-full bg-white/40 backdrop-blur p-6 rounded-2xl shadow border border-white/30">
+      <h1 className="text-3xl font-bold mb-6 text-white">Interview Buddy</h1>
+      <div className="flex flex-col max-w-3xl w-full bg-white/10 backdrop-blur p-6 rounded-2xl shadow border border-white/20">
         <div className="flex-1 overflow-y-auto mb-4 space-y-4" style={{ maxHeight: '50vh' }}>
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`max-w-[80%] px-4 py-3 rounded-2xl shadow ${msg.role === 'ai' ? 'bg-indigo-100 text-gray-800 self-start' : 'bg-white text-gray-800 self-end'}`}
+              className={`max-w-[80%] px-4 py-3 rounded-2xl shadow text-sm ${msg.role === 'ai' ? 'bg-purple-800 text-white self-start' : 'bg-indigo-600 text-white self-end'}`}
               style={{ alignSelf: msg.role === 'ai' ? 'flex-start' : 'flex-end' }}
             >
               {msg.content}
@@ -78,11 +78,11 @@ export default function InterviewBuddy() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your answer…"
-            className="flex-1 p-3 rounded-lg bg-white/70 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 p-3 rounded-lg bg-white/20 backdrop-blur text-white placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <button
             type="submit"
-            className="px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow"
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-medium shadow hover:brightness-110"
           >
             Send
           </button>
