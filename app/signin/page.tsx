@@ -9,27 +9,44 @@ export default function SignIn() {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage('Check your email for a login link');
-    }
-    setLoading(false);
-  };
+ const handleEmailSignIn = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage(null);
 
-  const handleOAuthSignIn = async (provider: 'google' | 'linkedin_id' | 'apple' | 'github' | string) => {
-    setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({ provider: provider as any });
-    if (error) {
-      setMessage(error.message);
-    }
-    setLoading(false);
-  };
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: `${window.location.origin}/dashboard`, // 👈 Redirect to dashboard
+    },
+  });
+
+  if (error) {
+    setMessage(error.message);
+  } else {
+    setMessage('Check your email for a login link');
+  }
+
+  setLoading(false);
+};
+
+const handleOAuthSignIn = async (provider: 'google' | 'linkedin_id' | 'apple' | 'github' | string) => {
+  setLoading(true);
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: provider as any,
+    options: {
+      redirectTo: `${window.location.origin}/dashboard`, // 👈 Redirect to dashboard
+    },
+  });
+
+  if (error) {
+    setMessage(error.message);
+  }
+
+  setLoading(false);
+};
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12">
