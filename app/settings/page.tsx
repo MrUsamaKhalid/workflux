@@ -59,40 +59,40 @@ export default function Settings() {
   }
   return (
     <AppShell>
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Settings</h1>
-      <div className="max-w-2xl bg-white/40 backdrop-blur p-6 rounded-2xl shadow border border-white/30">
-        {message && <p className="text-sm mb-4 text-green-600">{message}</p>}
+      <h1 className="text-3xl font-bold mb-6 text-white">Settings</h1>
+      <div className="max-w-2xl bg-white/10 backdrop-blur p-6 rounded-2xl shadow border border-white/20">
+        {message && <p className="text-sm mb-4 text-green-400">{message}</p>}
         <div className="flex flex-col gap-4">
-          <label className="text-sm text-gray-700">Display Name
+          <label className="text-sm text-purple-200">Display Name
             <input
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="mt-1 p-3 w-full rounded-lg bg-white/70 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-3 w-full rounded-lg bg-white/20 backdrop-blur text-white placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="Your full name"
             />
           </label>
-          <label className="text-sm text-gray-700">Location
+          <label className="text-sm text-purple-200">Location
             <input
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="mt-1 p-3 w-full rounded-lg bg-white/70 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-3 w-full rounded-lg bg-white/20 backdrop-blur text-white placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="City, State"
             />
           </label>
-          <label className="text-sm text-gray-700">Country
+          <label className="text-sm text-purple-200">Country
             <input
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              className="mt-1 p-3 w-full rounded-lg bg-white/70 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-3 w-full rounded-lg bg-white/20 backdrop-blur text-white placeholder-purple-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="Country"
             />
           </label>
           <button
             onClick={handleSave}
-            className="mt-4 px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow"
+            className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:brightness-110 text-white font-medium shadow"
           >
             Save Changes
           </button>

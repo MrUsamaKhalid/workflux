@@ -21,27 +21,47 @@ export default function ResumeBuilder() {
     { id: 3, name: 'Creative', preview: '/template3.png' },
   ];
 
-  // Handler to move to next step after saving input
+  // Handler to move to next step after saving input. In the future this could
+  // call an API endpoint to preprocess and extract key details from the raw
+  // resume text. For now we simply advance to template selection.
   const handleSubmitInput = async () => {
-    // TODO: Call AI API to parse and enhance resumeText
-    // For now, just go to next step
     setStep(2);
   };
+
+  // Handler to generate the resume using the selected template and AI. This
+  // calls the server-side API route /api/generateResume, passing the raw
+  // resume text. The API returns a rewritten resume which we wrap in a
+  // simple HTML structure for preview. Errors are surfaced via alert.
   const handleGenerateResume = async () => {
-    // TODO: Generate resume HTML from selected template and AI-enhanced data
-    // Here we'll create a simple stub preview
-    setGeneratedHtml(
-      `<div style="padding:2rem;font-family:Arial">
-        <h1 style="font-size:32px">Your Name</h1>
-        <h2 style="font-size:20px;color:gray">Job Title</h2>
-        <p>${resumeText.substring(0, 200)}...</p>
-      </div>`
-    );
-    setStep(3);
+    if (!selectedTemplate) return;
+    try {
+      const response = await fetch('/api/generateResume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ resume: resumeText }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(json.error || 'Failed to generate resume');
+      }
+      const content = json.result || '';
+      // Basic HTML wrapper; in a real application you could apply the
+      // selectedTemplate design here.
+      setGeneratedHtml(
+        `<div style="padding:2rem;font-family:Arial;color:#f5f5f5;background-color:#12073b;">
+          ${content.replace(/\n/g, '<br/>')}
+        </div>`
+      );
+      setStep(3);
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
   return (
     <AppShell>
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">Resume Builder</h1>
+      <h1 className="text-3xl font-bold mb-6 text-white">Resume Builder</h1>
       {/* Step indicator */}
       <div className="flex items-center gap-4 mb-8">
         {[1, 2, 3].map((s) => (
@@ -50,7 +70,7 @@ export default function ResumeBuilder() {
             className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium transition-colors ${
               step === s
                 ? 'bg-indigo-600 text-white'
-                : 'bg-white/30 text-gray-700 border border-white/50'
+                : 'bg-white/10 text-purple-300 border border-white/30'
             }`}
           >
             {s}
@@ -58,19 +78,19 @@ export default function ResumeBuilder() {
         ))}
       </div>
       {step === 1 && (
-        <div className="bg-white/40 backdrop-blur-lg p-6 rounded-2xl border border-white/30 shadow max-w-3xl">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">Step 1: Provide your information</h2>
+        <div className="bg-white/10 backdrop-blur-lg p-6 rounded-2xl border border-white/20 shadow max-w-3xl">
+          <h2 className="text-xl font-semibold mb-4 text-white">Step 1: Provide your information</h2>
           <textarea
             value={resumeText}
             onChange={(e) => setResumeText(e.target.value)}
             placeholder="Paste your resume content or work history here…"
             rows={8}
-            className="w-full p-4 rounded-lg bg-white/70 text-gray-800 placeholder-gray-500 backdrop-blur focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-4 rounded-lg bg-white/20 text-white placeholder-purple-400 backdrop-blur focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           <div className="flex gap-4 mt-4">
             <button
               onClick={handleSubmitInput}
-              className="px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow"
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:brightness-110 text-white font-medium shadow"
             >
               Next: Choose Template
             </button>
@@ -79,34 +99,34 @@ export default function ResumeBuilder() {
       )}
       {step === 2 && (
         <div className="max-w-5xl">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">Step 2: Choose a template</h2>
+          <h2 className="text-xl font-semibold mb-4 text-white">Step 2: Choose a template</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {templates.map((tpl) => (
               <div
                 key={tpl.id}
-                className={`border rounded-xl p-4 cursor-pointer backdrop-blur-lg bg-white/40 transition-colors hover:border-indigo-500 ${
-                  selectedTemplate === tpl.id ? 'border-indigo-600' : 'border-white/30'
+                className={`border rounded-xl p-4 cursor-pointer backdrop-blur-lg bg-white/10 transition-colors hover:border-pink-500 ${
+                  selectedTemplate === tpl.id ? 'border-pink-600' : 'border-white/20'
                 }`}
                 onClick={() => setSelectedTemplate(tpl.id)}
               >
-                <div className="h-40 bg-gray-200 rounded mb-3 flex items-center justify-center text-gray-400 text-sm">
+                <div className="h-40 bg-white/20 rounded mb-3 flex items-center justify-center text-purple-400 text-sm">
                   Template {tpl.id} Preview
                 </div>
-                <h3 className="text-lg font-medium text-gray-900">{tpl.name}</h3>
+                <h3 className="text-lg font-medium text-white">{tpl.name}</h3>
               </div>
             ))}
           </div>
           <div className="flex gap-4 mt-6">
             <button
               onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-full bg-white/70 text-gray-800 border border-gray-300 hover:bg-white/80"
+              className="px-6 py-3 rounded-full border border-white/30 text-purple-200 hover:bg-white/10"
             >
               Back
             </button>
             <button
               onClick={handleGenerateResume}
               disabled={selectedTemplate === null}
-              className="px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow disabled:opacity-50"
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-medium shadow disabled:opacity-50 hover:brightness-110"
             >
               Generate Resume
             </button>
@@ -115,22 +135,22 @@ export default function ResumeBuilder() {
       )}
       {step === 3 && generatedHtml && (
         <div className="max-w-5xl">
-          <h2 className="text-xl font-semibold mb-4 text-gray-900">Step 3: Review & export</h2>
-          <div className="bg-white rounded-xl p-6 shadow-md overflow-auto max-h-[600px]">
+          <h2 className="text-xl font-semibold mb-4 text-white">Step 3: Review & export</h2>
+          <div className="bg-white/10 rounded-xl p-6 shadow-md overflow-auto max-h-[600px]">
             {/* dangerouslySetInnerHTML used for demo; sanitize in production */}
             <div dangerouslySetInnerHTML={{ __html: generatedHtml }} />
           </div>
           <div className="flex gap-4 mt-6">
             <button
               onClick={() => setStep(2)}
-              className="px-6 py-3 rounded-full bg-white/70 text-gray-800 border border-gray-300 hover:bg-white/80"
+              className="px-6 py-3 rounded-full border border-white/30 text-purple-200 hover:bg-white/10"
             >
               Back
             </button>
             <button
               onClick={async () => {
-                // Save resume to Supabase or trigger PDF generation
-                const { data, error } = await supabase
+                // Save resume to Supabase
+                const { error } = await supabase
                   .from('resumes')
                   .insert({ content: resumeText, template: selectedTemplate });
                 if (error) {
